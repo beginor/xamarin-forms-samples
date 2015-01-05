@@ -30,11 +30,12 @@ namespace WorkingWithFonts
 
 			var myLabel = new MyLabel {
 				Text = "MyLabel for Android!",
-				Font = Device.OnPlatform (
-					Font.SystemFontOfSize (NamedSize.Small),
-					Font.SystemFontOfSize (NamedSize.Medium), // will get overridden in custom Renderer
-					Font.SystemFontOfSize (NamedSize.Large)
-				),
+				// temporarily disable the size setting, since it's breaking the custom font on 1.2.2 :-(
+//				Font = Device.OnPlatform (
+//					Font.SystemFontOfSize (NamedSize.Small),
+//					Font.SystemFontOfSize (NamedSize.Medium), // will get overridden in custom Renderer
+//					Font.SystemFontOfSize (NamedSize.Large)
+//				),
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 			};
@@ -58,11 +59,21 @@ namespace WorkingWithFonts
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 			};
 
+
+			// Span formatting support
+			var labelFormatted = new Label ();
+			var fs = new FormattedString ();
+			fs.Spans.Add (new Span { Text="Red, ", ForegroundColor = Color.Red, Font = Font.SystemFontOfSize(20, FontAttributes.Italic) });
+			fs.Spans.Add (new Span { Text=" blue, ", ForegroundColor = Color.Blue, Font = Font.SystemFontOfSize(32) });
+			fs.Spans.Add (new Span { Text=" and green!", ForegroundColor = Color.Green, Font = Font.SystemFontOfSize(12) });
+			labelFormatted.FormattedText = fs;
+
+
 			Content = new StackLayout { 
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				Children = {
-					label, myLabel, labelBold, labelItalic, labelBoldItalic
+					label, myLabel, labelBold, labelItalic, labelBoldItalic, labelFormatted
 				}
 			};
 		}
